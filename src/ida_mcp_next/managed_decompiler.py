@@ -22,7 +22,7 @@ class ManagedDecompileResult:
 
 def managed_decompiler_command() -> str | None:
     """定位可用的 `ilspycmd` 命令。"""
-    override = os.environ.get("IDA_STDIO_MCP_ILSPYCMD", "").strip()
+    override = os.environ.get("ida_mcp_next_ILSPYCMD", "").strip()
     if override:
         return override
     discovered = shutil.which("ilspycmd")

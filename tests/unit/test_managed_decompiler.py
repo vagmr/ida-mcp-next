@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import unittest
 
-from ida_stdio_mcp.managed_decompiler import extract_method_source
+from ida_mcp_next.managed_decompiler import extract_method_source
 
 
 class ManagedDecompilerTests(unittest.TestCase):

@@ -1,4 +1,4 @@
-"""ida-stdio-mcp 包入口。"""
+"""ida-mcp-next 包入口。"""
 
 from .main import main
 

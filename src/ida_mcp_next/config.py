@@ -157,7 +157,7 @@ def load_config(config_path: Path) -> AppConfig:
         ),
         server=ServerConfig(
             protocol_version=_as_str(server_raw.get("protocol_version", "2025-06-18"), default="2025-06-18"),
-            server_name=_as_str(server_raw.get("server_name", "ida-stdio-mcp"), default="ida-stdio-mcp"),
+            server_name=_as_str(server_raw.get("server_name", "ida-mcp-next"), default="ida-mcp-next"),
             server_version=_as_str(server_raw.get("server_version", "0.2.0"), default="0.2.0"),
             default_input_path=_as_str(server_raw.get("default_input_path", ""), default=""),
         ),

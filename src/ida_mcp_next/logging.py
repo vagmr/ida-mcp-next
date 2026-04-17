@@ -17,7 +17,7 @@ CONSOLE = Console(stderr=True, soft_wrap=True)
 def configure_logging(config: LoggingConfig) -> Path:
     """配置终端与文件日志。"""
     config.directory.mkdir(parents=True, exist_ok=True)
-    log_path = config.directory / f"ida-stdio-mcp-{datetime.now().strftime('%Y%m%d-%H%M%S')}.log"
+    log_path = config.directory / f"ida-mcp-next-{datetime.now().strftime('%Y%m%d-%H%M%S')}.log"
 
     logger.remove()
     logger.add(

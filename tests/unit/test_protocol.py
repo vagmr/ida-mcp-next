@@ -8,11 +8,11 @@ from io import BytesIO
 from pathlib import Path
 from typing import cast
 
-from ida_stdio_mcp.config import load_config
-from ida_stdio_mcp.models import JsonObject, JsonValue
-from ida_stdio_mcp.service import build_service
-from ida_stdio_mcp.runtime import HeadlessRuntime
-from ida_stdio_mcp.stdio_server import ServerIdentity, StdioMcpServer
+from ida_mcp_next.config import load_config
+from ida_mcp_next.models import JsonObject, JsonValue
+from ida_mcp_next.service import build_service
+from ida_mcp_next.runtime import HeadlessRuntime
+from ida_mcp_next.stdio_server import ServerIdentity, StdioMcpServer
 
 
 def expect_object(value: JsonValue, *, name: str) -> JsonObject:
@@ -133,7 +133,7 @@ class ProtocolTests(unittest.TestCase):
         assert initialize is not None
         initialize_result = expect_object(initialize["result"], name="initialize.result")
         server_info = expect_object(initialize_result["serverInfo"], name="initialize.serverInfo")
-        self.assertEqual(server_info["name"], "ida-stdio-mcp")
+        self.assertEqual(server_info["name"], "ida-mcp-next")
 
         ping = server.dispatch_message({"jsonrpc": "2.0", "id": 99, "method": "ping", "params": {}})
         self.assertIsNotNone(ping)

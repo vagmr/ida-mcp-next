@@ -8,11 +8,11 @@ import unittest
 from pathlib import Path
 from typing import cast
 
-from ida_stdio_mcp.config import load_config
-from ida_stdio_mcp.models import JsonObject, JsonValue
-from ida_stdio_mcp.service import build_service
-from ida_stdio_mcp.runtime import HeadlessRuntime
-from ida_stdio_mcp.stdio_server import ServerIdentity, StdioMcpServer
+from ida_mcp_next.config import load_config
+from ida_mcp_next.models import JsonObject, JsonValue
+from ida_mcp_next.service import build_service
+from ida_mcp_next.runtime import HeadlessRuntime
+from ida_mcp_next.stdio_server import ServerIdentity, StdioMcpServer
 
 
 def expect_object(value: JsonValue, *, name: str) -> JsonObject:
@@ -55,7 +55,7 @@ class HeadlessToolTests(unittest.TestCase):
         cls.repo_root = cls._repo_root()
         cls.elf_fixture = Path(
             os.environ.get(
-                "IDA_STDIO_MCP_TEST_BINARY",
+                "ida_mcp_next_TEST_BINARY",
                 str(cls.repo_root / "tests" / "fixtures" / "crackme03.elf"),
             )
         ).resolve()
@@ -174,7 +174,7 @@ class HeadlessToolTests(unittest.TestCase):
         comment = self._call_tool(
             "set_comments",
             {
-                "items": [{"addr": "main", "comment": "ida-stdio-mcp 集成测试注释", "repeatable": False}],
+                "items": [{"addr": "main", "comment": "ida-mcp-next 集成测试注释", "repeatable": False}],
                 "session_id": "elf-main",
             },
         )

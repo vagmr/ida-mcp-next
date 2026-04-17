@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from ida_stdio_mcp.directory_analysis import DirectoryAnalysisPolicy, detect_binary_kind, iter_candidate_files
+from ida_mcp_next.directory_analysis import DirectoryAnalysisPolicy, detect_binary_kind, iter_candidate_files
 
 
 class DirectoryAnalysisTests(unittest.TestCase):
