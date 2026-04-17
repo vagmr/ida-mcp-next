@@ -1,7 +1,7 @@
 [project]
 name = "ida-mcp-next"
 version = "0.2.0"
-description = "IDA Headless + 原生 stdio 的 MCP 服务"
+description = "IDA Pro 9.2+ headless + 原生 stdio 的下一代 MCP 服务"
 readme = "README.md"
 authors = [
     { name = "yexi", email = "fanguojun066@gmail.com" }
