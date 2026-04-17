@@ -1,0 +1,251 @@
+# ida-stdio-mcp
+
+让 AI 助手直接操控 IDA Pro 进行逆向分析的 MCP 服务器。
+
+本项目灵感来自 [ida-pro-mcp](https://github.com/mrexodia/ida-pro-mcp)，专注于 IDA Pro 9.2+ 的命令行模式（headless），让 Claude、Kilo 等 AI 助手能够：
+
+- 打开并分析二进制文件
+- 反编译函数、查看汇编代码
+- 搜索字符串、交叉引用
+- 重命名符号、添加注释
+- 执行 Python 脚本
+- 调试程序
+
+## 特性
+
+- **纯命令行运行** - 无需启动 IDA GUI，适合自动化和 CI/CD
+- **MCP 协议** - 兼容 Claude Desktop、Kilo 等 AI 客户端
+- **多会话支持** - 可同时打开多个二进制文件
+- **安全可控** - 写操作和调试功能默认关闭，需显式启用
+
+## 环境要求
+
+- Python 3.11+
+- IDA Pro 9.2+（需包含 idalib）
+- [uv](https://docs.astral.sh/uv/) 包管理器
+
+## 安装
+
+### 1. 设置 IDA 环境变量
+
+```powershell
+# Windows
+$env:IDADIR = "C:\Program Files\IDA Professional 9.2"
+
+# Linux/macOS
+export IDADIR="/opt/ida-9.2"
+```
+
+### 2. 安装依赖
+
+```powershell
+uv sync
+```
+
+### 3. 验证安装
+
+```powershell
+uv run ida-stdio-mcp --help
+```
+
+## 快速开始
+
+```powershell
+# 启动服务
+uv run ida-stdio-mcp
+
+# 启动时打开样本
+uv run ida-stdio-mcp path/to/sample.exe
+
+# 启用写操作和脚本执行
+uv run ida-stdio-mcp --unsafe
+
+# 启用调试器
+uv run ida-stdio-mcp --debugger
+```
+
+## 配置 AI 客户端
+
+### Claude Desktop
+
+编辑配置文件：
+- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+
+**基础配置：**
+
+```json
+{
+  "mcpServers": {
+    "ida-stdio-mcp": {
+      "command": "uv",
+      "args": ["run", "--directory", "D:/work/ida-stdio-mcp", "--no-sync", "ida-stdio-mcp"],
+      "env": {
+        "IDADIR": "C:\\Program Files\\IDA Professional 9.2"
+      }
+    }
+  }
+}
+```
+
+**启动时自动加载样本：**
+
+```json
+{
+  "mcpServers": {
+    "ida-stdio-mcp": {
+      "command": "uv",
+      "args": ["run", "--directory", "D:/work/ida-stdio-mcp", "--no-sync", "ida-stdio-mcp", "D:/samples/target.exe"],
+      "env": {
+        "IDADIR": "C:\\Program Files\\IDA Professional 9.2"
+      }
+    }
+  }
+}
+```
+
+**启用写操作：**
+
+```json
+{
+  "mcpServers": {
+    "ida-stdio-mcp": {
+      "command": "uv",
+      "args": ["run", "--directory", "D:/work/ida-stdio-mcp", "--no-sync", "ida-stdio-mcp", "--unsafe"],
+      "env": {
+        "IDADIR": "C:\\Program Files\\IDA Professional 9.2"
+      }
+    }
+  }
+}
+```
+
+### Kilo (TOML)
+
+```toml
+[mcpServers.ida-stdio-mcp]
+command = "uv"
+args = ["run", "--directory", "D:/work/ida-stdio-mcp", "--no-sync", "ida-stdio-mcp"]
+
+[mcpServers.ida-stdio-mcp.env]
+IDADIR = "C:\\Program Files\\IDA Professional 9.2"
+```
+
+## 命令行参数
+
+| 参数 | 说明 |
+|------|------|
+| `<binary_path>` | 启动时自动打开的二进制文件 |
+| `--config <path>` | 配置文件路径，默认 `setting.toml` |
+| `--unsafe` | 启用写操作、符号重命名、Python 执行等 |
+| `--debugger` | 启用调试器功能 |
+| `--profile <path>` | 工具白名单配置 |
+| `--isolated-contexts` | 多 agent 隔离模式 |
+
+## 工具列表
+
+### 会话管理
+
+| 工具 | 说明 |
+|------|------|
+| `open_binary` | 打开二进制文件 |
+| `close_binary` | 关闭文件 |
+| `list_binaries` | 列出已打开的文件 |
+| `switch_binary` | 切换当前活动文件 |
+| `save_binary` | 保存 IDB 数据库 |
+
+### 信息查询
+
+| 工具 | 说明 |
+|------|------|
+| `survey_binary` | 文件概览：架构、段、入口点 |
+| `list_functions` | 列出所有函数 |
+| `get_function` | 获取函数详情 |
+| `decompile_function` | 反编译函数（native 返回伪代码，.NET 返回 C#） |
+| `disassemble_function` | 反汇编函数 |
+| `list_imports` | 导入表 |
+| `list_globals` | 全局变量 |
+| `list_strings` | 字符串列表 |
+| `get_xrefs_to` | 交叉引用 |
+| `read_struct` | 结构体定义 |
+
+### 搜索功能
+
+| 工具 | 说明 |
+|------|------|
+| `find_strings` | 搜索字符串 |
+| `find_bytes` | 搜索字节序列 |
+| `search_regex` | 正则搜索 |
+
+### 写操作（需 `--unsafe`）
+
+| 工具 | 说明 |
+|------|------|
+| `rename_symbols` | 重命名函数/变量 |
+| `set_comments` | 添加注释 |
+| `patch_bytes` | 修改字节 |
+| `declare_types` | 定义数据类型 |
+| `evaluate_python` | 执行 Python 代码 |
+
+### 调试器（需 `--debugger`）
+
+| 工具 | 说明 |
+|------|------|
+| `debug_start` | 启动调试 |
+| `debug_step_into` | 单步进入 |
+| `debug_step_over` | 单步跳过 |
+| `debug_continue` | 继续执行 |
+| `debug_registers` | 查看寄存器 |
+| `debug_read_memory` | 读取内存 |
+
+## 配置文件
+
+项目根目录的 `setting.toml`：
+
+```toml
+[logging]
+level = "INFO"
+directory = "logs"
+
+[server]
+protocol_version = "2025-06-18"
+server_name = "ida-stdio-mcp"
+server_version = "0.2.0"
+
+[feature_gates]
+allow_unsafe = false
+allow_debugger = false
+isolated_contexts = false
+
+[runtime_workspace]
+directory = ".runtime"
+symbol_cache_directory = ".runtime/symbol-cache"
+
+[limits]
+default_page_size = 100
+max_page_size = 1000
+```
+
+运行时副作用（例如 PDB/符号缓存、占位文件）会统一写入项目内的：
+
+- `.runtime/symbol-cache/`
+
+不会再直接散落到仓库根目录；`.runtime/` 已默认加入 `.gitignore`。
+
+## 开发
+
+```powershell
+# 类型检查
+uv run basedpyright
+
+# 运行测试
+uv run python -m unittest discover -s tests/unit
+```
+
+## 致谢
+
+本项目受到 [ida-pro-mcp](https://github.com/mrexodia/ida-pro-mcp) 的启发，感谢作者的开拓性工作。
+
+## License
+
+MIT
