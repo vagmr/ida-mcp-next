@@ -1,5 +1,5 @@
 [project]
-name = "ida-stdio-mcp"
+name = "ida-mcp-next"
 version = "0.2.0"
 description = "IDA Headless + 原生 stdio 的 MCP 服务"
 readme = "README.md"
@@ -14,8 +14,8 @@ dependencies = [
 ]
 
 [project.scripts]
-ida-stdio-mcp = "ida_stdio_mcp.main:main"
-ida-stdio-mcp-test = "ida_stdio_mcp.test_runner:main"
+ida-mcp-next = "ida_mcp_next.main:main"
+ida-mcp-next-test = "ida_mcp_next.test_runner:main"
 
 [build-system]
 requires = ["uv_build>=0.9.27,<0.10.0"]

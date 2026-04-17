@@ -1,4 +1,4 @@
-# ida-stdio-mcp
+# ida-mcp-next
 
 让 AI 助手直接操控 IDA Pro 进行逆向分析的 MCP 服务器。
 
@@ -45,23 +45,23 @@ uv sync
 ### 3. 验证安装
 
 ```powershell
-uv run ida-stdio-mcp --help
+uv run ida-mcp-next --help
 ```
 
 ## 快速开始
 
 ```powershell
 # 启动服务
-uv run ida-stdio-mcp
+uv run ida-mcp-next
 
 # 启动时打开样本
-uv run ida-stdio-mcp path/to/sample.exe
+uv run ida-mcp-next path/to/sample.exe
 
 # 启用写操作和脚本执行
-uv run ida-stdio-mcp --unsafe
+uv run ida-mcp-next --unsafe
 
 # 启用调试器
-uv run ida-stdio-mcp --debugger
+uv run ida-mcp-next --debugger
 ```
 
 ## 配置 AI 客户端
@@ -77,9 +77,9 @@ uv run ida-stdio-mcp --debugger
 ```json
 {
   "mcpServers": {
-    "ida-stdio-mcp": {
+    "ida-mcp-next": {
       "command": "uv",
-      "args": ["run", "--directory", "D:/work/ida-stdio-mcp", "--no-sync", "ida-stdio-mcp"],
+      "args": ["run", "--directory", "D:/work/ida-mcp-next", "--no-sync", "ida-mcp-next"],
       "env": {
         "IDADIR": "C:\\Program Files\\IDA Professional 9.2"
       }
@@ -93,9 +93,9 @@ uv run ida-stdio-mcp --debugger
 ```json
 {
   "mcpServers": {
-    "ida-stdio-mcp": {
+    "ida-mcp-next": {
       "command": "uv",
-      "args": ["run", "--directory", "D:/work/ida-stdio-mcp", "--no-sync", "ida-stdio-mcp", "D:/samples/target.exe"],
+      "args": ["run", "--directory", "D:/work/ida-mcp-next", "--no-sync", "ida-mcp-next", "D:/samples/target.exe"],
       "env": {
         "IDADIR": "C:\\Program Files\\IDA Professional 9.2"
       }
@@ -109,9 +109,9 @@ uv run ida-stdio-mcp --debugger
 ```json
 {
   "mcpServers": {
-    "ida-stdio-mcp": {
+    "ida-mcp-next": {
       "command": "uv",
-      "args": ["run", "--directory", "D:/work/ida-stdio-mcp", "--no-sync", "ida-stdio-mcp", "--unsafe"],
+      "args": ["run", "--directory", "D:/work/ida-mcp-next", "--no-sync", "ida-mcp-next", "--unsafe"],
       "env": {
         "IDADIR": "C:\\Program Files\\IDA Professional 9.2"
       }
@@ -123,11 +123,11 @@ uv run ida-stdio-mcp --debugger
 ### Kilo (TOML)
 
 ```toml
-[mcpServers.ida-stdio-mcp]
+[mcpServers.ida-mcp-next]
 command = "uv"
-args = ["run", "--directory", "D:/work/ida-stdio-mcp", "--no-sync", "ida-stdio-mcp"]
+args = ["run", "--directory", "D:/work/ida-mcp-next", "--no-sync", "ida-mcp-next"]
 
-[mcpServers.ida-stdio-mcp.env]
+[mcpServers.ida-mcp-next.env]
 IDADIR = "C:\\Program Files\\IDA Professional 9.2"
 ```
 
@@ -209,7 +209,7 @@ directory = "logs"
 
 [server]
 protocol_version = "2025-06-18"
-server_name = "ida-stdio-mcp"
+server_name = "ida-mcp-next"
 server_version = "0.2.0"
 
 [feature_gates]
