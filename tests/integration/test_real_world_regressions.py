@@ -38,20 +38,22 @@ class RealWorldRegressionTests(unittest.TestCase):
         return Path(__file__).resolve().parents[2]
 
     @classmethod
+    def _resolve_optional_fixture(cls, env_name: str, relative_path: str) -> Path:
+        """解析真实样本路径，优先环境变量，其次仓库内约定路径。"""
+        raw_value = os.environ.get(env_name, str(cls.repo_root / relative_path))
+        return Path(raw_value).resolve()
+
+    @classmethod
     def setUpClass(cls) -> None:
         cls.repo_root = cls._repo_root()
-        cls.real_native_fixture = Path(
-            os.environ.get(
-                "ida_mcp_next_REAL_NATIVE_BINARY",
-                r"D:\h-game\サキュバスデュエル\SuccubusDuel.exe",
-            )
-        ).resolve()
-        cls.real_managed_fixture = Path(
-            os.environ.get(
-                "ida_mcp_next_REAL_MANAGED_BINARY",
-                r"D:\h-game\サキュバスデュエル\SuccubusDuel_Data\Managed\Assembly-CSharp.dll",
-            )
-        ).resolve()
+        cls.real_native_fixture = cls._resolve_optional_fixture(
+            "IDA_MCP_NEXT_REAL_NATIVE_BINARY",
+            "tests/fixtures/real-world/native/sample.exe",
+        )
+        cls.real_managed_fixture = cls._resolve_optional_fixture(
+            "IDA_MCP_NEXT_REAL_MANAGED_BINARY",
+            "tests/fixtures/real-world/managed/Assembly-CSharp.dll",
+        )
 
     def setUp(self) -> None:
         self.config = load_config(self.repo_root / "setting.toml")

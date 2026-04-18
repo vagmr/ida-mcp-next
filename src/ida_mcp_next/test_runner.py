@@ -20,7 +20,7 @@ def main(argv: list[str] | None = None) -> int:
 
     import os
 
-    os.environ["ida_mcp_next_TEST_BINARY"] = str(args.binary.resolve())
+    os.environ["IDA_MCP_NEXT_TEST_BINARY"] = str(args.binary.resolve())
     sys.path.insert(0, str(Path.cwd()))
     _ = importlib.import_module("tests.integration.test_headless_tools")
     suite = unittest.defaultTestLoader.discover(

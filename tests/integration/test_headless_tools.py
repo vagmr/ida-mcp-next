@@ -55,7 +55,7 @@ class HeadlessToolTests(unittest.TestCase):
         cls.repo_root = cls._repo_root()
         cls.elf_fixture = Path(
             os.environ.get(
-                "ida_mcp_next_TEST_BINARY",
+                "IDA_MCP_NEXT_TEST_BINARY",
                 str(cls.repo_root / "tests" / "fixtures" / "crackme03.elf"),
             )
         ).resolve()
